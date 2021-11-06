@@ -8,9 +8,8 @@ namespace miniFE {
 
   namespace Hex8 {
 
-#ifdef SYCL_LANGUAGE_VERSION
-    __constant__ MINIFE_SCALAR gauss_pts_c[numGaussPointsPerDim];
-#endif
+//     __constant__ MINIFE_SCALAR gauss_pts_c[numGaussPointsPerDim];
+     dpct::global_memory<MINIFE_SCALAR, numGaussPointsPerDim> gauss_pts_c;
 
     template<typename Scalar>
       void compute_detJ_invJ_grad_vals(int elethidx, const Scalar elemNodeCoords[Hex8::spatialDim],

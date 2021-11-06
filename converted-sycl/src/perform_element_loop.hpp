@@ -308,7 +308,7 @@ perform_element_loop_cuda(const simple_mesh_description<typename MatrixType::Glo
                           *CudaManager::s1);
 
   //copy gauss_pts to constant memory
-  dpct::async_dpct_memcpy(gauss_pts_c.get_ptr(*CudaManager::s1), gp, sizeof(gp),
+  dpct::async_dpct_memcpy(Hex8::gauss_pts_c.get_ptr(*CudaManager::s1), gp, sizeof(gp),
                           dpct::host_to_device, *CudaManager::s1);
   cudaCheckError();
 
@@ -325,7 +325,7 @@ perform_element_loop_cuda(const simple_mesh_description<typename MatrixType::Glo
   DPCT1007:48: Migration of this CUDA API is not supported by the Intel(R) DPC++
   Compatibility Tool.
   */
-  cudaThreadSetCacheConfig(cudaFuncCachePreferL1);
+  // cudaThreadSetCacheConfig(cudaFuncCachePreferL1);
   /*
   DPCT1026:49: The call to cudaDeviceSetSharedMemConfig was removed because
   DPC++ currently does not support configuring shared memory on devices.
@@ -333,9 +333,9 @@ perform_element_loop_cuda(const simple_mesh_description<typename MatrixType::Glo
 
   //call finite-element assembly kernel:
   CudaManager::s1->submit([&](sycl::handler &cgh) {
-    gauss_pts_c.init(*CudaManager::s1);
+    Hex8::gauss_pts_c.init(*CudaManager::s1);
 
-    auto gauss_pts_c_acc_ct1 = gauss_pts_c.get_access(cgh);
+    auto gauss_pts_c_acc_ct1 = Hex8::gauss_pts_c.get_access(cgh);
     dpct::access_wrapper<GlobalOrdinal *> d_elemIds_acc_ct2(d_elemIds, cgh);
 
     auto mesh_getPOD_ct0 = mesh.getPOD();
@@ -346,9 +346,9 @@ perform_element_loop_cuda(const simple_mesh_description<typename MatrixType::Glo
     auto thrust_raw_pointer_cast_d_psi_ct6 = dpct::get_raw_pointer(&d_psi[0]);
 
     cgh.parallel_for<dpct_kernel_name<class element_loop_kernel_b38dfa,
-                                      PlaceHolder /*Fix the type mannually*/,
-                                      PlaceHolder /*Fix the type mannually*/,
-                                      PlaceHolder /*Fix the type mannually*/>>(
+                                      Scalar /*Fix the type mannually*/,
+                                      GlobalOrdinal /*Fix the type mannually*/,
+                                      MeshType /*Fix the type mannually*/>>(
         sycl::nd_range<3>(sycl::range<3>(1, 1, NUM_BLOCKS) *
                               sycl::range<3>(1, 1, BLOCK_SIZE),
                           sycl::range<3>(1, 1, BLOCK_SIZE)),

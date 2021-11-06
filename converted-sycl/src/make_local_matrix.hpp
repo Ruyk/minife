@@ -134,7 +134,7 @@ template <typename MatrixType>
 
 void renumberExternalsAndCount(MatrixType A, typename MatrixType::GlobalOrdinalType start_row, typename MatrixType::GlobalOrdinalType stop_row, typename MatrixType::GlobalOrdinalType *num_externals,
                                sycl::nd_item<3> item_ct1,
-                               volatile GlobalOrdinalType *red) {
+                               volatile typename MatrixType::GlobalOrdinalType *red) {
   typedef typename MatrixType::GlobalOrdinalType GlobalOrdinalType;
   GlobalOrdinalType sum=0;
   for (int row_idx = item_ct1.get_group(2) * item_ct1.get_local_range().get(2) +
@@ -350,7 +350,7 @@ make_local_matrix(MatrixType& A)
         dpct::get_raw_pointer(&num_cols_est[0]);
 
     cgh.parallel_for<dpct_kernel_name<class renumberExternalsAndCount_bbf462,
-                                      PlaceHolder /*Fix the type mannually*/>>(
+                                      MatrixType /*Fix the type mannually*/>>(
         sycl::nd_range<3>(sycl::range<3>(1, 1, NUM_BLOCKS) *
                               sycl::range<3>(1, 1, BLOCK_SIZE),
                           sycl::range<3>(1, 1, BLOCK_SIZE)),
@@ -377,8 +377,8 @@ make_local_matrix(MatrixType& A)
     auto d_map_getPOD_ct1 = d_map.getPOD();
 
     cgh.parallel_for<dpct_kernel_name<class markExternalColumnsInMap_2f8471,
-                                      PlaceHolder /*Fix the type mannually*/,
-                                      PlaceHolder /*Fix the type mannually*/>>(
+                                      GlobalOrdinal /*Fix the type mannually*/,
+                                      Scalar /*Fix the type mannually*/>>(
         sycl::nd_range<3>(sycl::range<3>(1, 1, NUM_BLOCKS) *
                               sycl::range<3>(1, 1, BLOCK_SIZE),
                           sycl::range<3>(1, 1, BLOCK_SIZE)),
@@ -529,7 +529,7 @@ make_local_matrix(MatrixType& A)
         dpct::get_raw_pointer(&d_external_local_index[0]);
 
     cgh.parallel_for<dpct_kernel_name<class renumberExternals_8533eb,
-                                      PlaceHolder /*Fix the type mannually*/>>(
+                                      MatrixType /*Fix the type mannually*/>>(
         sycl::nd_range<3>(sycl::range<3>(1, 1, NUM_BLOCKS) *
                               sycl::range<3>(1, 1, BLOCK_SIZE),
                           sycl::range<3>(1, 1, BLOCK_SIZE)),

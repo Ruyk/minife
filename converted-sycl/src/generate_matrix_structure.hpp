@@ -299,7 +299,7 @@ generate_matrix_structure(const simple_mesh_description<typename MatrixType::Glo
     generated an initial code for time measurements in SYCL. You can change the
     way time is measured depending on your goals.
     */
-    e1_ct1 = std::chrono::steady_clock::now();
+    auto e1_ct1 = std::chrono::steady_clock::now();
     CudaManager::e1 = CudaManager::s1->submit_barrier();
   }
   catch(...) {
