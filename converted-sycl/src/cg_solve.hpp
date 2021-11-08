@@ -129,14 +129,14 @@ cg_solve(OperatorType& A,
   does not support registering of existing host memory for use by device. Use
   USM to allocate memory for use by host and device.
   */
-  cudaCheckError();
+  //cudaCheckError();
   /*
   DPCT1026:62: The call to cudaHostRegister was removed because DPC++ currently
   does not support registering of existing host memory for use by device. Use
   USM to allocate memory for use by host and device.
   */
-  if (A.send_buffer.size() > 0);
-  cudaCheckError();
+  //if (A.send_buffer.size() > 0);
+  //cudaCheckError();
 #endif
 #endif
 
@@ -236,14 +236,14 @@ cg_solve(OperatorType& A,
   currently does not support registering of existing host memory for use by
   device. Use USM to allocate memory for use by host and device.
   */
-  cudaCheckError();
+  //cudaCheckError();
   /*
   DPCT1026:64: The call to cudaHostUnregister was removed because DPC++
   currently does not support registering of existing host memory for use by
   device. Use USM to allocate memory for use by host and device.
   */
-  if (A.send_buffer.size() > 0);
-  cudaCheckError();
+  //if (A.send_buffer.size() > 0);
+  //cudaCheckError();
 #endif
 #endif
 

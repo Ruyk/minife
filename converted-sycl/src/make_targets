@@ -3,7 +3,7 @@ OBJS = \
 	BoxPartition.o \
 	YAML_Doc.o \
 	YAML_Element.o \
-  CudaUtils.o
+  CudaUtils.dp.o
 
 UTIL_OBJS = \
 	param_utils.o \

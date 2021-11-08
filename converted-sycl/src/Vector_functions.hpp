@@ -413,19 +413,19 @@ typename TypeTraits<typename Vector::ScalarType>::magnitude_type
  workgroup size if needed.
  */
   CudaManager::s1->submit([&](sycl::handler &cgh) {
-    sycl::accessor<Vector /*Fix the type mannually*/, 1,
+    sycl::accessor<Scalar /*Fix the type mannually*/, 1,
                    sycl::access_mode::read_write, sycl::access::target::local>
         red_acc_ct1(sycl::range<1>(1024 /*BLOCK_SIZE*/), cgh);
 
     auto thrust_raw_pointer_cast_d_ct0 = dpct::get_raw_pointer(&d[0]);
 
     cgh.parallel_for<dpct_kernel_name<class dot_final_reduce_kernel_acbbb1,
-                                      Vector /*Fix the type mannually*/>>(
+                                      Scalar /*Fix the type mannually*/>>(
         sycl::nd_range<3>(sycl::range<3>(1, 1, 1024),
                           sycl::range<3>(1, 1, 1024)),
         [=](sycl::nd_item<3> item_ct1) {
           dot_final_reduce_kernel(thrust_raw_pointer_cast_d_ct0, item_ct1,
-                                  (Vector /*Fix the type mannually*/ *)
+                                  (Scalar /*Fix the type mannually*/ *)
                                       red_acc_ct1.get_pointer());
         });
   });

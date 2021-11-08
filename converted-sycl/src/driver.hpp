@@ -79,7 +79,7 @@
         dpct::get_current_device().queues_wait_and_throw();                    \
         timer_type rtf_t0 = mytimer();                                         \
         fn;                                                                    \
-        cudaDeviceSynchronize();                                               \
+        dpct::get_current_device().queues_wait_and_throw();                    \
         time_inc = mytimer() - rtf_t0;                                         \
         time_total += time_inc;                                                \
         if (myproc == 0) {                                                     \

@@ -228,9 +228,9 @@ void renumberExternalsAndCount(MatrixType A, typename MatrixType::GlobalOrdinalT
     sycl::access::address_space::local_space>".
     */
     sycl::atomic<
-        typename struct PODELLMatrix<double, int, int>::GlobalOrdinalType>(
+        typename PODELLMatrix<double, int, int>::GlobalOrdinalType>(
         sycl::global_ptr<
-            typename struct PODELLMatrix<double, int, int>::GlobalOrdinalType>(
+            typename PODELLMatrix<double, int, int>::GlobalOrdinalType>(
             num_externals))
         .fetch_add(sum);
 }
@@ -341,7 +341,7 @@ make_local_matrix(MatrixType& A)
   Adjust the workgroup size if needed.
   */
   CudaManager::s1->submit([&](sycl::handler &cgh) {
-    sycl::accessor<GlobalOrdinalType, 1, sycl::access_mode::read_write,
+    sycl::accessor<GlobalOrdinal, 1, sycl::access_mode::read_write,
                    sycl::access::target::local>
         red_acc_ct1(sycl::range<1>(512), cgh);
 
@@ -850,7 +850,7 @@ make_local_matrix(MatrixType& A)
   an initial code for time measurements in SYCL. You can change the way time is
   measured depending on your goals.
   */
-  e1_ct1 = std::chrono::steady_clock::now();
+  auto e1_ct1 = std::chrono::steady_clock::now();
   CudaManager::e1 = CudaManager::s1->submit_barrier();
   //////////////////
   // Finish up !!
@@ -882,7 +882,7 @@ make_local_matrix(MatrixType& A)
 
       cgh.parallel_for<
           dpct_kernel_name<class createExternalMapping_2ca3f7,
-                           PlaceHolder /*Fix the type mannually*/>>(
+                           MatrixType /*Fix the type mannually*/>>(
           sycl::nd_range<3>(sycl::range<3>(1, 1, NUM_BLOCKS) *
                                 sycl::range<3>(1, 1, BLOCK_SIZE),
                             sycl::range<3>(1, 1, BLOCK_SIZE)),
