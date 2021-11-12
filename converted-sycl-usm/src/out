@@ -1,0 +1,107 @@
+./get_common_files
+./generate_info_header "mpicxx  -fPIE -fopenmp -g" "-O3" "miniFE" "MINIFE"
+CXX: unknown
+Compiler version: Intel(R) oneAPI DPC++/C++ Compiler 2021.4.0 (2021.4.0.20210924)
+mpicxx  -fPIE -fopenmp -g -I/include -I/include/ -I/opt/intel/oneapi/compiler/2021.4.0/linux//include/sycl/ -I/opt/intel/oneapi/compiler/2021.4.0/linux//compiler/include/ -I/opt/intel/oneapi/dpcpp-ct/latest//include/ -pthread  -std=c++17 -D_GLIBCXX_USE_TBB_PAR_BACKEND=0 -DPSTL_USE_PARALLEL_POLICIES=0 -DONEDPL_USE_DPCPP_BACKEND=1 -DONEDPL_USE_PREDEFINED_POLICIES=1 -DONEDPL_USE_DEFAULT_POLICIES=1 -O3 -I. -I../utils -I../fem -DMINIFE_SCALAR=double -DMINIFE_LOCAL_ORDINAL=int -DMINIFE_GLOBAL_ORDINAL=int -DMINIFE_ELL_MATRIX -DHAVE_MPI -DMPICH_IGNORE_CXX_SEEK -DMATVEC_OVERLAP  -DMINIFE_INFO=1 -DMINIFE_KERNELS=0 -c main.dp.cpp
+In file included from main.dp.cpp:49:
+In file included from ./driver.hpp:56:
+./make_local_matrix.hpp:136:41: error: unknown type name 'GlobalOrdinalType'
+                               volatile GlobalOrdinalType *red) {
+                                        ^
+./make_local_matrix.hpp:230:18: error: expected a qualified name after 'typename'
+        typename struct PODELLMatrix<double, int, int>::GlobalOrdinalType>(
+                 ^
+./make_local_matrix.hpp:230:57: error: typedef 'GlobalOrdinalType' cannot be referenced with a struct specifier
+        typename struct PODELLMatrix<double, int, int>::GlobalOrdinalType>(
+                                                        ^
+./CudaELLMatrix.hpp:52:25: note: declared here
+  typedef GlobalOrdinal GlobalOrdinalType;
+                        ^
+In file included from main.dp.cpp:49:
+In file included from ./driver.hpp:56:
+./make_local_matrix.hpp:232:22: error: expected a qualified name after 'typename'
+            typename struct PODELLMatrix<double, int, int>::GlobalOrdinalType>(
+                     ^
+./make_local_matrix.hpp:232:61: error: typedef 'GlobalOrdinalType' cannot be referenced with a struct specifier
+            typename struct PODELLMatrix<double, int, int>::GlobalOrdinalType>(
+                                                            ^
+./CudaELLMatrix.hpp:52:25: note: declared here
+  typedef GlobalOrdinal GlobalOrdinalType;
+                        ^
+In file included from main.dp.cpp:49:
+In file included from ./driver.hpp:56:
+./make_local_matrix.hpp:380:39: error: use of undeclared identifier 'VectorType'
+                                      VectorType /*Fix the type mannually*/>>(
+                                      ^
+In file included from main.dp.cpp:49:
+In file included from ./driver.hpp:58:
+./cg_solve.hpp:137:32: warning: if statement has empty body [-Wempty-body]
+  if (A.send_buffer.size() > 0);
+                               ^
+./cg_solve.hpp:137:32: note: put the semicolon on a separate line to silence this warning
+./cg_solve.hpp:244:32: warning: if statement has empty body [-Wempty-body]
+  if (A.send_buffer.size() > 0);
+                               ^
+./cg_solve.hpp:244:32: note: put the semicolon on a separate line to silence this warning
+In file included from main.dp.cpp:49:
+./driver.hpp:189:3: error: use of undeclared identifier 'cudaDeviceSynchronize'
+  RUN_TIMED_FUNCTION("generating matrix structure...",
+  ^
+./driver.hpp:81:9: note: expanded from macro 'RUN_TIMED_FUNCTION'
+        cudaDeviceSynchronize();                                               \
+        ^
+./driver.hpp:205:3: error: use of undeclared identifier 'cudaDeviceSynchronize'
+  RUN_TIMED_FUNCTION("assembling FE data...",
+  ^
+./driver.hpp:81:9: note: expanded from macro 'RUN_TIMED_FUNCTION'
+        cudaDeviceSynchronize();                                               \
+        ^
+./driver.hpp:228:3: error: use of undeclared identifier 'cudaDeviceSynchronize'
+  RUN_TIMED_FUNCTION("imposing Dirichlet BC...",
+  ^
+./driver.hpp:81:9: note: expanded from macro 'RUN_TIMED_FUNCTION'
+        cudaDeviceSynchronize();                                               \
+        ^
+./driver.hpp:230:3: error: use of undeclared identifier 'cudaDeviceSynchronize'
+  RUN_TIMED_FUNCTION("imposing Dirichlet BC...",
+  ^
+./driver.hpp:81:9: note: expanded from macro 'RUN_TIMED_FUNCTION'
+        cudaDeviceSynchronize();                                               \
+        ^
+./driver.hpp:243:3: error: use of undeclared identifier 'cudaDeviceSynchronize'
+  RUN_TIMED_FUNCTION("making matrix indices local...",
+  ^
+./driver.hpp:81:9: note: expanded from macro 'RUN_TIMED_FUNCTION'
+        cudaDeviceSynchronize();                                               \
+        ^
+In file included from main.dp.cpp:49:
+In file included from ./driver.hpp:56:
+./make_local_matrix.hpp:357:11: error: no matching function for call to 'renumberExternalsAndCount'
+          renumberExternalsAndCount(A_getPOD_ct0, start_row, stop_row,
+          ^~~~~~~~~~~~~~~~~~~~~~~~~
+./driver.hpp:244:22: note: in instantiation of function template specialization 'miniFE::make_local_matrix<miniFE::CudaELLMatrix<double, int, int>>' requested here
+                     make_local_matrix(A),
+                     ^
+main.dp.cpp:186:14: note: in instantiation of function template specialization 'miniFE::driver<double, int, int>' requested here
+     miniFE::driver< MINIFE_SCALAR, MINIFE_LOCAL_ORDINAL, MINIFE_GLOBAL_ORDINAL>(global_box, my_box, params, doc);
+             ^
+In file included from main.dp.cpp:49:
+In file included from ./driver.hpp:48:
+In file included from ./SparseMatrix_functions.hpp:43:
+./Vector_functions.hpp:427:11: error: no matching function for call to 'dot_final_reduce_kernel'
+          dot_final_reduce_kernel(thrust_raw_pointer_cast_d_ct0, item_ct1,
+          ^~~~~~~~~~~~~~~~~~~~~~~
+./cg_solve.hpp:161:20: note: in instantiation of function template specialization 'miniFE::dot<miniFE::Vector<double, int, int>>' requested here
+  TICK(); rtrans = dot(r, r); TOCK(tDOT);
+                   ^
+./driver.hpp:294:5: note: in instantiation of function template specialization 'miniFE::cg_solve<miniFE::CudaELLMatrix<double, int, int>, miniFE::Vector<double, int, int>, miniFE::matvec_std<miniFE::CudaELLMatrix<double, int, int>, miniFE::Vector<double, int, int>>>' requested here
+    cg_solve(A, b, x, matvec_std<MatrixType,VectorType>(), max_iters, tol,
+    ^
+main.dp.cpp:186:14: note: in instantiation of function template specialization 'miniFE::driver<double, int, int>' requested here
+     miniFE::driver< MINIFE_SCALAR, MINIFE_LOCAL_ORDINAL, MINIFE_GLOBAL_ORDINAL>(global_box, my_box, params, doc);
+             ^
+./Vector_functions.hpp:286:6: note: candidate template ignored: deduced conflicting types for parameter 'Scalar' ('double' vs. 'miniFE::Vector<double, int, int>')
+void dot_final_reduce_kernel(Scalar *d, sycl::nd_item<3> item_ct1,
+     ^
+2 warnings and 13 errors generated.
+make: *** [make_targets:39: main.dp.o] Error 1
